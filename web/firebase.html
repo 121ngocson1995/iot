@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <script src="https://www.gstatic.com/firebasejs/6.1.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.1.0/firebase-database.js"></script>
+  <script>
+    // tạo config kết nối firebase
+    var firebaseConfig = {
+      apiKey: "AIzaSyApsQiF2bUfRaEV4JFVZc6RP9j8wyEbMl8",
+      authDomain: "mqtt-e9aac.firebaseapp.com",
+      databaseURL: "https://mqtt-e9aac.firebaseio.com",
+      projectId: "mqtt-e9aac",
+      storageBucket: "mqtt-e9aac.appspot.com",
+      messagingSenderId: "852073466572",
+      appId: "1:852073466572:web:79c2c710294b2d6b"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+
+    // kết nối tới firebase
+    var db = firebase.database();
+
+    // gọi biến "opened" trên firebase
+    var ref = db.ref('opened');
+  </script>
+</head>
+
+<body>
+  <!-- hiển thị giá trị của biến từ firebase -->
+  <span id="data">abc</span>
+
+  <!-- button thay đổi giá trị của biến -->
+  <button type="button" name="button" onclick="func()">Write data</button>
+
+  <script>
+    // nhận thay đổi của biến từ firebase
+    ref.on('value', function(snapshot) {
+      // set giá trị vào thẻ <span>
+      document.getElementById('data').innerHTML = snapshot.val();
+    });
+
+    function func() {
+      // ghi giá trị lên firebase
+      ref.set("gg");
+    }
+  </script>
+</body>
+
+</html>
