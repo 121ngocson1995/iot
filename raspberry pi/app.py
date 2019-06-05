@@ -33,16 +33,20 @@ while 1:
   # if door has just been opened while status is closed
   if int(ir_read) > 900 and door_opened == "false":
     # fetch data again to make sure the offline status is up-to-date
-    # online_status = firebase.get('/opened', None)
-    if firebase.get('/locked', None) == 'true' and door_opened == firebase.get('/opened', None):
+    cloudData = firebase.get('/', None)
+
+    # if the status is correct
+    if door_opened == cloudData['opened']:
       # set door status on cloud as opened
       firebase.put_async('/', 'opened', "true")
 
-      # set alarm status on cloud as ringing
-      firebase.put_async('/', "ringingstatus", "true")
+      # if the door is locked, set alarm status on cloud as ringing
+      if cloudData['locked'] == 'true':
+        # update alarm status
+        firebase.put_async('/', "ringingstatus", "true")
 
-      # Alarm goes off
-      enableAlarm(buzzer, led, firebase)
+        # Alarm goes off
+        enableAlarm(buzzer, led, firebase)
 
     # update offline data
     door_opened = "true"
