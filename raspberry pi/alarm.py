@@ -14,7 +14,12 @@ def enableAlarm(buzzer, led, firebase):
   global alarm
   alarm = True
 
+  # update alarm status
+  firebase.put('/', "ringingstatus", "true")
+
   while alarm == True:
+    firebase.get_async('/ringingstatus', None, callback=updateAlarmStatus)
+
     GPIO.output(buzzer,GPIO.HIGH)
     GPIO.output(led,GPIO.HIGH)
     sleep(0.5)
@@ -22,5 +27,3 @@ def enableAlarm(buzzer, led, firebase):
     GPIO.output(buzzer,GPIO.LOW)
     GPIO.output(led,GPIO.LOW)
     sleep(0.5)
-
-    firebase.get_async('/ringingstatus', None, callback=updateAlarmStatus)

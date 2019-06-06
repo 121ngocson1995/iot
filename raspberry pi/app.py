@@ -42,9 +42,6 @@ while 1:
 
       # if the door is locked, set alarm status on cloud as ringing
       if cloudData['locked'] == 'true':
-        # update alarm status
-        firebase.put_async('/', "ringingstatus", "true")
-
         # Alarm goes off
         enableAlarm(buzzer, led, firebase)
 
@@ -53,10 +50,8 @@ while 1:
 
   # if door has just been closed while status is opened
   elif int(ir_read) <=900 and door_opened == "true":
-    # fetch data again to make sure the offline status is up-to-date
-    if door_opened == firebase.get('/opened', None):
-      # set door status on cloud as opened
-      firebase.put_async('/', "opened", "false")
+    # set door status on cloud as opened
+    firebase.put_async('/', "opened", "false")
 
     # update offline data
     door_opened = "false"
