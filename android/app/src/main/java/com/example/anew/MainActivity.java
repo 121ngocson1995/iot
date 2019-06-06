@@ -165,14 +165,20 @@ public class MainActivity extends AppCompatActivity {
     public void toggleLock(View v) {
         if (locked.equals("true")) {
             lockStatus.setValue("false");
+
+            Toast.makeText(this, "Door unlocked", Toast.LENGTH_SHORT).show();
         } else {
             lockStatus.setValue("true");
+
+            Toast.makeText(this, "Door locked", Toast.LENGTH_SHORT).show();
         }
     }
 
     public void toggleAlarm(View v) {
         if (alarm.equals("true")) {
             alarmStatus.setValue("false");
+
+            Toast.makeText(this, "Alarm disabled", Toast.LENGTH_SHORT).show();
         } else {
             alarmStatus.setValue("true");
         }
