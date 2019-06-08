@@ -12,7 +12,6 @@ exports.sendNotification = functions.database.ref('/opened').onWrite((change, co
   if (eventBefore.val() === 'false'
       && eventAfter.val() === 'true') {
     return eventAfter.ref.parent.child('locked').once('value').then(locked => {
-      console.log('AAAAAA: ' + locked.val());
       if (locked.val() === 'true') {
         // Notification details.
         const payload = {
