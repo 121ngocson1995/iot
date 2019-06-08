@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <link rel="stylesheet" href="./css/bootstrap.min.css">
+  <link rel="stylesheet" href="./css/main.css">
+  <link rel="stylesheet" href="./css/component-custom-switch.css">
+  <script src="https://www.gstatic.com/firebasejs/6.1.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.1.0/firebase-database.js"></script>
+  <script src="./js/bootstrap.min.js"></script>
+  >
+</head>
+
+<body>
+  <!-- hiển thị giá trị của biến từ firebase -->
+  <div class="container mr_60 bg">
+    <div class="row justify-content-center">
+      <h2>Burglar alert</h2>
+    </div>
+    <div class="row mr_top20">
+      <div class="custom-switch custom-switch-label-yesno pl-0 col-md-3 offset-md-3">
+        <input class="custom-switch-input" id="alarm" type="checkbox" onclick="turn_ringing()">
+        <label class="custom-switch-btn" for="alarm"></label>
+        <div class="custom-switch-content-checked my-3">
+          <span class="text-success">Turn on alarm</span>
+        </div>
+        <div class="custom-switch-content-unchecked my-3">
+          <span class="text-danger">Turn off alarm</span>
+        </div>
+      </div>
+      <div class="custom-switch custom-switch-label-yesno pl-0 col-md-3 offset-md-3">
+        <input class="custom-switch-input" id="lock" type="checkbox" onclick="turn_lock()">
+        <label class="custom-switch-btn" for="lock"></label>
+        <div class="custom-switch-content-checked my-3">
+          <span class="text-success">Turn on locked</span>
+        </div>
+        <div class="custom-switch-content-unchecked my-3">
+          <span class="text-danger">Turn off locked</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- button thay đổi giá trị của biến -->
+  <script>
+    // tạo config kết nối firebase
+    var firebaseConfig = {
+      apiKey: "AIzaSyApsQiF2bUfRaEV4JFVZc6RP9j8wyEbMl8",
+      authDomain: "mqtt-e9aac.firebaseapp.com",
+      databaseURL: "https://mqtt-e9aac.firebaseio.com",
+      projectId: "mqtt-e9aac",
+      storageBucket: "mqtt-e9aac.appspot.com",
+      messagingSenderId: "852073466572",
+      appId: "1:852073466572:web:79c2c710294b2d6b"
+    };
+    firebase.initializeApp(firebaseConfig);
+    // kết nối tới firebase
+    var db = firebase.database();
+    // gọi biến "opened" trên firebase
+    var opened = db.ref('opened');
+    var lock = db.ref('locked');
+    var ringing_status = db.ref('ringingstatus');
+    var locked = db.ref('locked');
+    //--------------alarm
+    window.onload = function(e){
+        ringing_status.on("value", function(snapshot) {
+            console.log(snapshot.val());
+            document.getElementById('alarm').checked = (snapshot.val() == 'true') ? true : false;
+            return callback(info);
+        }, function (error) {
+            console.log("Error: " + error.code);
+            return callback(0);
+         });
+        locked.on("value", function(snapshot) {
+            console.log(snapshot.val());
+            document.getElementById('lock').checked = (snapshot.val() == 'true') ? true : false;
+            return callback(info);
+        }, function (error) {
+            console.log("Error: " + error.code);
+            return callback(0);
+         });
+    }
+    function turn_ringing(){
+        ringing_status.set(document.getElementById('alarm').checked ? "true" : "false");
+    }
+    //------------------lock
+    function turn_lock(){
+        locked.set(document.getElementById('lock').checked ? "true" : "false");
+    }
+  </script
+</body>
+
+</html>

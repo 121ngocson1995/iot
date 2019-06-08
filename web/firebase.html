@@ -4,8 +4,11 @@
 <head>
   <meta charset="utf-8">
   <title></title>
+  <link rel="stylesheet" href="./css/bootstrap.min.css">
+  <link rel="stylesheet" href="./css/main.css">
   <script src="https://www.gstatic.com/firebasejs/6.1.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/6.1.0/firebase-database.js"></script>
+  <script src="./js/bootstrap.min.js"></script>
   <script>
     // tạo config kết nối firebase
     var firebaseConfig = {
@@ -17,36 +20,46 @@
       messagingSenderId: "852073466572",
       appId: "1:852073466572:web:79c2c710294b2d6b"
     };
-
     firebase.initializeApp(firebaseConfig);
-
     // kết nối tới firebase
     var db = firebase.database();
-
     // gọi biến "opened" trên firebase
-    var ref = db.ref('opened');
+    var opened = db.ref('opened');
+    var lock = db.ref('locked');
+    var ringing_status = db.ref('ringingstatus');
+
+    function turnoff_ringingStatus() {
+      // ghi giá trị lên firebase
+      ringing_status.set("false");
+      console.log(ringing_status);
+      document.getElementById("button_off").setAttribute("style", "display: none");
+      document.getElementById("button_on").setAttribute("style", "display: block;");
+      return ringing_status;
+    }
+    function turnon_ringingStatus() {
+      // ghi giá trị lên firebase
+      ringing_status.set("true");
+      console.log(ringing_status);
+      document.getElementById("button_off").setAttribute("style", "display: block");
+      document.getElementById("button_on").setAttribute("style", "display: none;");
+      return ringing_status;
+    }
   </script>
 </head>
 
 <body>
   <!-- hiển thị giá trị của biến từ firebase -->
-  <span id="data">abc</span>
+  <div class="container mr_60 bg">
+    <div class="row justify-content-center">
+      <h2>Welcome to </h2>
+    </div>
+    <div id="button" class="mr_top">
+      <button class="btn btn-outline-danger" type="button" name="button" id = "button_off" onclick="turnoff_ringingStatus()">Turn off</button>
+      <button class="btn btn-outline-primary" type="button" name="button" id = "button_on" style="visibility: hidden" onclick="turnon_ringingStatus()">Turn on</button>
+    </div>
+  </div>
 
   <!-- button thay đổi giá trị của biến -->
-  <button type="button" name="button" onclick="func()">Write data</button>
-
-  <script>
-    // nhận thay đổi của biến từ firebase
-    ref.on('value', function(snapshot) {
-      // set giá trị vào thẻ <span>
-      document.getElementById('data').innerHTML = snapshot.val();
-    });
-
-    function func() {
-      // ghi giá trị lên firebase
-      ref.set("gg");
-    }
-  </script>
 </body>
 
 </html>

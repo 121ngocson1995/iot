@@ -1,0 +1,12 @@
+body{
+	background-image: url("../images/images.jpeg");
+}
+.bg{
+	background-color: white;
+}
+.mr_60{
+	margin-top: 60px;
+}
+.mr_top20{
+	margin-top: 20px;
+}
